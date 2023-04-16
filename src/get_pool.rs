@@ -44,7 +44,7 @@ pub async fn get_pool(args: &Args) -> Result<Address> {
         println!("Sorry,no uniswapv2 pool was found for the tokens you're trying to swap");
         std::process::exit(0);
     } else {
-        println!("Pool found: {}", pair);
+        println!("\n\n UniswapV2 Pool found: {}", pair);
         Ok(pair)
     }
 }

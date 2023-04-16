@@ -6,5 +6,5 @@ This tool is not yet published on crates.io. To use it, clone the repository and
 ```
 cargo run -q
 ```
-Follow the prompts to enter the token addresses and amounts you want to swap. The tool will then print the transaction hash and the URL to view the transaction on Etherscan. This features are not complete yet as this tool is still in development.
+Follow the prompts to enter the token addresses and amounts you want to swap. The tool will then print the transaction hash and the URL to view the transaction on Etherscan. These features are not complete yet as this tool is still in development.
 Cheers!

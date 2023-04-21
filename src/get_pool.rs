@@ -18,13 +18,8 @@ abigen!(
 );
 
 #[tokio::main]
-pub async fn get_pool(args: &Args) -> Result<Address> {
-    // Create a new provider pointing to the specified RPC URL
-    let client = Provider::<Http>::try_from("https://eth.llamarpc.com")?;
-    // Wrap the provider in an Arc so that it can be shared
-    let client = Arc::new(client);
-
-    // UniswapV2 Factory address
+pub async fn get_pool(args: &Args, client: Arc<Provider<Http>>) -> Result<Address> {
+    // UniswapV2 Factory address, parsed into an Address type(H160)
     let address = "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f".parse::<Address>()?;
     // Instantiate the contract bindings
     let factory = IUniswapV2Factory::new(address, Arc::clone(&client));
@@ -44,7 +39,9 @@ pub async fn get_pool(args: &Args) -> Result<Address> {
         println!("Sorry,no uniswapv2 pool was found for the tokens you're trying to swap");
         std::process::exit(0);
     } else {
-        println!("\n\n UniswapV2 Pool found: {}", pair);
+        println!("\n----------------------------------------------------------");
+        println!("UniswapV2 Pool found:\n {}", pair.to_string());
+        println!("----------------------------------------------------------\n");
         Ok(pair)
     }
 }

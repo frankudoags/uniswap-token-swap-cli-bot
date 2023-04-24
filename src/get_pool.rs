@@ -1,7 +1,9 @@
 use ethers::{
     contract::abigen,
     core::types::Address,
+    prelude::{k256::ecdsa::SigningKey, SignerMiddleware},
     providers::{Http, Provider},
+    signers::Wallet,
 };
 use eyre::Result;
 use std::sync::Arc;
@@ -18,7 +20,10 @@ abigen!(
 );
 
 #[tokio::main]
-pub async fn get_pool(args: &Args, client: Arc<Provider<Http>>) -> Result<Address> {
+pub async fn get_pool(
+    args: &Args,
+    client: Arc<SignerMiddleware<Provider<Http>, Wallet<SigningKey>>>,
+) -> Result<Address> {
     // UniswapV2 Factory address, parsed into an Address type(H160)
     let address = "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f".parse::<Address>()?;
     // Instantiate the contract bindings
@@ -31,10 +36,7 @@ pub async fn get_pool(args: &Args, client: Arc<Provider<Http>>) -> Result<Addres
     // Call the contract method to get the pair address
     let pair = factory.get_pair(addr_a, addr_b).call().await?;
 
-    // check if the pair is zero
-    // if it is, then no pool exists for the given tokens, so we exit
-    // if it isn't, then a pool exists for the given tokens
-    // and we can print the address of the pool
+    // check if the pair is zero, if it is, no pool was found
     if pair == Address::zero() {
         println!("Sorry,no uniswapv2 pool was found for the tokens you're trying to swap");
         std::process::exit(0);

@@ -11,7 +11,7 @@ pub(crate) fn main() -> Args {
     println!("----------------------------------------------------------");
     println!("UNISWAP TOKEN SWAP CLI");
     println!("This is a CLI tool to swap tokens on Uniswap");
-    println!("----------------------------------------------------------\n\n");
+    println!("----------------------------------------------------------\n");
 
     println!("Enter the token you want to swap from: ");
     let mut token_from = String::new();

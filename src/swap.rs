@@ -69,7 +69,7 @@ pub async fn get_amounts_out(
     let amounts = v2_router
         .get_amounts_out(
             U256::from(amount_in) * U256::from(10).pow(token_a_decimals.into()),
-            token_path.clone()
+            token_path.clone(),
         )
         .call()
         .await?;
@@ -85,6 +85,17 @@ pub async fn get_amounts_out(
             / U256::from(10).pow(token_b_decimals.into()).as_u128() as f64,
         token_b_name
     );
+
+    //get the old amount of token b in the wallet
+    let old_amount_b = addr_b_instance.balance_of(client.address()).call().await?;
+
+    println!(
+        "Note that you currently have {} {} in your wallet",
+        old_amount_b.as_u128() as f64
+            / U256::from(10).pow(token_b_decimals.into()).as_u128() as f64,
+        token_b_name
+    );
+
     println!("\n\n----------------------------------------------------------\n");
 
     let mut val: String = String::from("");
@@ -118,6 +129,8 @@ pub async fn get_amounts_out(
     println!("UniSwapV2 Router02 contract approved.");
     println!("\n----------------------------------------------------------\n\n");
 
+    println!("Please wait... (this may take a while) ");
+
     // Swap the tokens
     println!(
         "Swapping {} {} for {} {}",
@@ -131,7 +144,8 @@ pub async fn get_amounts_out(
     let _tx = v2_router
         .swap_exact_tokens_for_tokens(
             U256::from(amount_in) * U256::from(10).pow(token_a_decimals.into()),
-            U256::from(amounts[1]),
+            // U256::from(amounts[1]),
+            U256::zero(),
             token_path.clone(),
             *&client.address(),
             U256::from(10000000000i64),
@@ -140,10 +154,6 @@ pub async fn get_amounts_out(
         .await?
         .await?;
 
-    println!("Swap successful.");
-
-    println!("\n----------------------------------------------------------\n\n");
-
     //check client address balance of token b
     let balance = addr_b_instance
         .balance_of(*&client.address())
@@ -151,11 +161,16 @@ pub async fn get_amounts_out(
         .await?;
 
     println!(
-        "Your new balance of {} is: {}",
+        "Your new balance of {} is: {} {}",
         token_b_name,
         U256::from(balance).as_u128() as f64
-            / U256::from(10).pow(token_b_decimals.into()).as_u128() as f64
+            / U256::from(10).pow(token_b_decimals.into()).as_u128() as f64,
+        token_b_name
     );
+
+    println!("Swap successful, enjoy your new tokens, funds are safu!");
+
+    println!("\n----------------------------------------------------------\n\n");
 
     Ok(())
 }

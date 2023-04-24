@@ -19,7 +19,7 @@ pub(crate) fn main() -> Args {
         .read_line(&mut token_from)
         .expect("Failed to read line");
 
-    println!("Enter the token you want to swap to: ");
+    println!("\nEnter the token you want to swap to: ");
     let mut token_to = String::new();
     stdin()
         .read_line(&mut token_to)

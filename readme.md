@@ -9,10 +9,21 @@ cargo run -q
 Follow the prompts to enter the token addresses and amounts you want to swap. The tool will then print the transaction hash and the URL to view the transaction on Etherscan. These features are not complete yet as this tool is still in development.
 Cheers!
 
+As of now, this project works with an Anvil mainnet fork, but it will be updated to work with the mainnet later on.
 
-You'd need to add an env file with the following variables:
+Here are some input examples:
 ```
-PRIVATE_KEY= YOUR_PRIVATE_KEY
+Enter the address of the token you want to swap from: 
+0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
+
+
+Enter the address of the token you want to swap to: 0xdAC17F958D2ee523a2206206994597C13D831ec7
 ```
-The tool will use this private key to sign the transaction. You can get a private key from Metamask or any other Ethereum wallet.
-NOT READY YET AGAIN, STILL IN DEVELOPMENT, DO NOT USE
+
+These prompts are for WETH and USDT respectively. The tool will then prompt you to enter the amount of WETH you want to swap for USDT. Here is an example:
+```
+Enter the amount of WETH you want to swap for USDT: 0.1
+```
+
+WETH is the only token that can be swapped from at the moment. This will be updated later on.
+```
